@@ -6,7 +6,7 @@ public class Door
 	
 	public Door()
 	{
-		que = questionFactory.getQandA();
+		que = QuestionFactory.getQandA();
 		locked = 0;
 	}
 	
