@@ -1,3 +1,6 @@
+//5-13-14
+//KM
+
 
 public class Door
 {
@@ -10,6 +13,13 @@ public class Door
 		locked = 0;
 	}
 	
+	public Door(QandA question)
+	{
+		que = question;
+		locked = 0;
+	}
+	
+	
 	public String getQuestion()
 	{
 		return que.getQuestion();
@@ -21,7 +31,7 @@ public class Door
 		return que.getAnswers();
 	}
 	
-	public int getCorrectIndex()
+	public char getCorrectIndex()
 	{
 		return que.getCorrectIndex();
 	}
@@ -49,7 +59,7 @@ public class Door
 			
 	}
 	
-	public String answerQ(int pAnswer)
+	public String answerQ(char pAnswer)
 	{
 	
 		if(pAnswer == this.getCorrectIndex())

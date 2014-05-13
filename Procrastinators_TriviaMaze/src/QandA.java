@@ -1,14 +1,17 @@
+//5-13-14
+//KM
+
 public class QandA 
 {
 	private String que;
 	private String[] ans;
-	int correctIndex;
+	char correctIndex;
 	
-	public QandA(String ques, int correct, String anOne, String anTwo, String anThree, String anFour, int type)
+	public QandA(String ques, char correct, String anOne, String anTwo, String anThree, String anFour, int type)
 	{
 		que = ques;
 		
-		correct = correctIndex;
+		correctIndex = correct;
 		
 		if(type == 1)
 		{
@@ -38,7 +41,7 @@ public class QandA
 		return ans;
 	}
 	
-	public int getCorrectIndex()
+	public char getCorrectIndex()
 	{
 		return correctIndex;
 	}
