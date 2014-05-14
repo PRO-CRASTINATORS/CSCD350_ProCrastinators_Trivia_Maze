@@ -1,4 +1,4 @@
-//Updated 5/13/2014
+//Updated 5/14/2014
 //ZB
 
 import java.util.Random;
@@ -15,10 +15,10 @@ public class Room
 	
 	public Room()
 	{
-		for(int i = 0; i < 4; i++)
-		{
-			this.aDoors[i] = new Door();
-		}
+		this.dNorth = null;
+		this.dSouth = null;
+		this.dEast = null;
+		this.dWest = null;
 		this.itemGen();
 	}
 	
