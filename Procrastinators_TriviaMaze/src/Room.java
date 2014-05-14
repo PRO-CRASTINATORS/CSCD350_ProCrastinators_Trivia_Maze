@@ -6,11 +6,11 @@ import java.util.Random;
 
 public class Room 
 {
-	//North Door aDoors[0]
-	//South Door aDoors[1]
-	//East Door aDoors[2]
-	//West Door aDoors[3]
-	private Door [] aDoors = new Door[4];
+
+	private Door dNorth;
+	private Door dSouth;
+	private Door dEast;
+	private Door dWest;
 	private boolean bItem = false;
 	
 	public Room()
@@ -25,6 +25,26 @@ public class Room
 	public boolean getItem()
 	{
 		return this.bItem;
+	}
+	
+	public setNorth( Door n ) 
+	{
+		this.dNorth = n;
+	}
+	
+	public setSouth( Door s )
+	{
+		this.dSouth = s;
+	}
+	
+	public setEast( Door e )
+	{
+		this.dEast = e;
+	}
+	
+	public setWest( Door w )
+	{
+		this.dWest = w;
 	}
 	
 	private boolean itemGen()
