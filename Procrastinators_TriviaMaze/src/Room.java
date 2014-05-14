@@ -19,7 +19,7 @@ public class Room
 		this.dSouth = null;
 		this.dEast = null;
 		this.dWest = null;
-		this.itemGen();
+		this.bItem = this.itemGen();
 	}
 	
 	public boolean getItem()
@@ -47,11 +47,16 @@ public class Room
 		this.dWest = w;
 	}
 	
+	public boolean getItem()
+	{
+		return this.bItem;
+	}
+	
 	private boolean itemGen()
 	{
 		Random rand = new Random();
-		if(rand.nextInt(1) == 1)
-			bItem = true;
+		if(rand.nextInt(10) < 3)
+			return true;
 		return false;
 	}
 }
