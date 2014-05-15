@@ -3,7 +3,6 @@
 
 import java.util.Random;
 
-
 public class Room 
 {
 
@@ -12,8 +11,8 @@ public class Room
 	private Door dEast;
 	private Door dWest;
 	private boolean bItem = false;
-	
-	public Room()
+
+	public Room() 
 	{
 		this.dNorth = null;
 		this.dSouth = null;
@@ -21,41 +20,37 @@ public class Room
 		this.dWest = null;
 		this.bItem = this.itemGen();
 	}
-	
-	public boolean getItem()
+
+	public boolean getItem() 
 	{
 		return this.bItem;
 	}
-	
-	public setNorth( Door n ) 
+
+	public void setNorth(Door n) 
 	{
 		this.dNorth = n;
 	}
-	
-	public setSouth( Door s )
+
+	public void setSouth(Door s) 
 	{
 		this.dSouth = s;
 	}
-	
-	public setEast( Door e )
+
+	public void setEast(Door e) 
 	{
 		this.dEast = e;
 	}
-	
-	public setWest( Door w )
+
+	public void setWest(Door w) 
 	{
 		this.dWest = w;
 	}
-	
-	public boolean getItem()
-	{
-		return this.bItem;
-	}
-	
-	private boolean itemGen()
+
+
+	private boolean itemGen() 
 	{
 		Random rand = new Random();
-		if(rand.nextInt(10) < 3)
+		if (rand.nextInt(10) < 3)
 			return true;
 		return false;
 	}
