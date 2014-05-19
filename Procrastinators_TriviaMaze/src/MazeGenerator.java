@@ -25,7 +25,7 @@ public class MazeGenerator
 			while (in.hasNextLine()) 
 			{
 				line = in.nextLine();
-				protoMap[k] = line.split("|");
+				protoMap[k] = line.split("\\|");
 
 				k++;
 			}
