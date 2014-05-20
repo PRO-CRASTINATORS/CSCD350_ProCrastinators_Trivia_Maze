@@ -1,9 +1,6 @@
-//Updated 5/14/2014
-//ZB
-
 import java.util.Random;
 
-public class Room 
+public class Room
 {
 
 	private Door dNorth;
@@ -12,7 +9,7 @@ public class Room
 	private Door dWest;
 	private boolean bItem = false;
 
-	public Room() 
+	public Room()
 	{
 		this.dNorth = null;
 		this.dSouth = null;
@@ -21,37 +18,58 @@ public class Room
 		this.bItem = this.itemGen();
 	}
 
-	public boolean getItem() 
+	public boolean getItem()
 	{
 		return this.bItem;
 	}
 
-	public void setNorth(Door n) 
+	public void setNorth(Door n)
 	{
 		this.dNorth = n;
 	}
 
-	public void setSouth(Door s) 
+	public void setSouth(Door s)
 	{
 		this.dSouth = s;
 	}
 
-	public void setEast(Door e) 
+	public void setEast(Door e)
 	{
 		this.dEast = e;
 	}
 
-	public void setWest(Door w) 
+	public void setWest(Door w)
 	{
 		this.dWest = w;
 	}
 
+	public Door getNorth()
+	{
+		return dNorth;
+	}
+	
+	public Door getEast()
+	{
+		return dEast;
+	}
+	
+	public Door getSouth()
+	{
+		return dSouth;
+	}
+	
+	public Door getWest()
+	{
+		return dWest;
+	}
+	
 
-	private boolean itemGen() 
+	private boolean itemGen()
 	{
 		Random rand = new Random();
 		if (rand.nextInt(10) < 3)
 			return true;
 		return false;
 	}
+
 }

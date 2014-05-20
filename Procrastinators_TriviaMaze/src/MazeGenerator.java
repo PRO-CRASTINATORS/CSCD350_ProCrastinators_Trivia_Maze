@@ -43,6 +43,8 @@ public class MazeGenerator
 	public static Room[][] convertMap(String[][] arra) 
 	{
 		Room[][] map = new Room[arra.length][arra[0].length];
+		QuestionFactory fact = new QuestionFactory();
+		//fact.genQlist();
 
 		for (int k = 1; k < map.length - 1; k++) {
 			for (int j = 1; j < map[0].length - 1; j++) 
@@ -52,17 +54,17 @@ public class MazeGenerator
 				{
 					map[k][j] = new Room();
 
-					if (arra[k + 1][j].equals("r"))
-						map[k][j].setNorth(new Door());
+					if (arra[k - 1][j].equals("r"))
+						map[k][j].setNorth(new Door(fact, k+1,j));
 
 					if (arra[k][j + 1].equals("r"))
-						map[k][j].setEast(new Door());
+						map[k][j].setEast(new Door(fact, k,j+1));
 
-					if (arra[k - 1][j].equals("r"))
-						map[k][j].setSouth(new Door());
+					if (arra[k + 1][j].equals("r"))
+						map[k][j].setSouth(new Door(fact, k+1,j));
 
 					if (arra[k][j - 1].equals("r"))
-						map[k][j].setWest(new Door());
+						map[k][j].setWest(new Door(fact, k,j-1));
 				}
 
 			}
