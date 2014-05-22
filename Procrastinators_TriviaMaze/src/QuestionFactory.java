@@ -7,11 +7,11 @@ import java.util.*;
 
 public class QuestionFactory 
 {
-	 ArrayList<QandA> qList;
+	 ArrayList<TriviaItem> qList;
 	
-	public QandA getQandA() 
+	public TriviaItem getQandA() 
 	{
-		return new QandA("Would you like to go through this door?", 'A', "Yes!", "No!", "", "", 1);
+		return new TriviaItem("Would you like to go through this door?", 'A', "Yes!", "No!", "", "", 1);
 		
 		//int index = (int) Math.floor(Math.random()*(qList.size()));
 		
@@ -24,7 +24,7 @@ public class QuestionFactory
 	
 	public void genQlist()
 	{
-		qList = new ArrayList<QandA>();
+		qList = new ArrayList<TriviaItem>();
 		String[] line;
 		
 		try 
@@ -37,7 +37,7 @@ public class QuestionFactory
 			{
 				System.out.println("Yes?");
 				line = in.nextLine().split(";");
-				qList.add(new QandA(line[0], line[1].charAt(0), line[2], line[3], line[4], line[5], (int)(line[6].charAt(0)) - 48));
+				qList.add(new TriviaItem(line[0], line[1].charAt(0), line[2], line[3], line[4], line[5], (int)(line[6].charAt(0)) - 48));
 			}
 			
 		} 

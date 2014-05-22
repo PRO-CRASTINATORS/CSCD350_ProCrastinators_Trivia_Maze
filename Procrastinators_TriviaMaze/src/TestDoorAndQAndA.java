@@ -28,7 +28,7 @@ public class TestDoorAndQAndA
 		System.out.println(d.answerQ(input));
 		
 		
-		d = new Door(new QandA("Would you like to go throough this door?", 'A', "Yes!", "No!", "I don't know...", "NEVER!!", 2));
+		d = new Door(new TriviaItem("Would you like to go throough this door?", 'A', "Yes!", "No!", "I don't know...", "NEVER!!", 2));
 		
 		System.out.println(d.getQuestion() +"\n");
 		ans = d.getAnswer();

@@ -1,6 +1,6 @@
 public class Door
 {
-	QandA que;
+	TriviaItem que;
 	int locked;
 	int[] coordinates;
 
@@ -15,7 +15,7 @@ public class Door
 	
 	}
 
-	public Door(QandA question)
+	public Door(TriviaItem question)
 	{
 		que = question;
 		locked = 0;

@@ -1,13 +1,13 @@
 //5-13-14
 //KM
 
-public class QandA 
+public class TriviaItem 
 {
 	private String que;
 	private String[] ans;
 	char correctIndex;
 
-	public QandA(String ques, char correct, String anOne, String anTwo, String anThree, String anFour, int type) 
+	public TriviaItem(String ques, char correct, String anOne, String anTwo, String anThree, String anFour, int type) 
 	{
 		que = ques;
 
