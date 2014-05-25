@@ -1,1 +1,105 @@
-﻿package {	import com.natejc.input.KeyboardManager;	import com.natejc.input.KeyCode;	import com.natejc.utils.StageRef;	import flash.utils.setTimeout;	import flash.display.MovieClip;	import flash.events.Event;	import classes.Room;	import classes.Door;	import classes.MazeGen;		import flash.net.URLRequest;	import flash.net.URLLoader;		/**	 * ...	 * @author Zac	 */	public class Main extends MovieClip	{		public 		var character				:MovieClip;		public 		var mcScreen				:MovieClip;		public	 	var pool					:Array = new Array(new Link(), new StormTrooper(), new Yoshi());		protected 	var _nCharacterSpeed		:Number = 15;		protected 	var _nDelay					:Number = 130;		private 	var index					:Number = 0;		private 	var bAnimation				:Boolean = true;				private 	var loader					:URLLoader;				public function Main()		{			StageRef.stage = this.stage;			KeyboardManager.init(this.stage);						this.loader = new URLLoader(new URLRequest("map1.txt"));						this.loader.addEventListener(Event.COMPLETE, loadComplete);						/*var rRoom:Room = new Room("mario");			rRoom.setNorth(new Door("north"));			rRoom.setSouth(new Door("south"));						character = pool[index];			character.x = 95;			character.y = 200;			this.stage.addChild(character); 						this.addEventListener(Event.ENTER_FRAME, this.enterFrameHandler, false, 0, true);*/		}				public function loadComplete(e:Event)		{			var maze:MazeGen = new MazeGen();			maze.loadMap(this.loader);			var aray:Array = maze.getMap();			Room(aray[1][1]).addRoomToStage();		}				private function resetBool():void		{			this.bAnimation = true;		}				public function enterFrameHandler($e:Event):void		{			if (this.character)			{				if (KeyboardManager.instance.isKeyDown(KeyCode.S) && bAnimation)				{					this.bAnimation = false;					character.gotoAndPlay("south walk");					if((this.character.y + character.Mask.height) < 330)						this.character.y += _nCharacterSpeed;					else						this.character.y = (330 - character.Mask.height);											setTimeout(resetBool, _nDelay);				}				else if (KeyboardManager.instance.isKeyDown(KeyCode.W) && bAnimation)				{					this.bAnimation = false;					character.gotoAndPlay("north walk");										if(this.character.y > 40)						this.character.y -= _nCharacterSpeed;					else						this.character.y = 40;											setTimeout(resetBool, _nDelay);				}				else if (KeyboardManager.instance.isKeyDown(KeyCode.A) && bAnimation)				{					this.bAnimation = false;					character.gotoAndPlay("west walk");					if(this.character.x > 70)						this.character.x -= _nCharacterSpeed;					else						this.character.x = 70;											setTimeout(resetBool, _nDelay);									}				else if (KeyboardManager.instance.isKeyDown(KeyCode.D) && bAnimation)				{					this.bAnimation = false;					character.gotoAndPlay("east walk");					if(this.character.x < 445)						this.character.x += _nCharacterSpeed;					else						this.character.x = 445;					setTimeout(resetBool, _nDelay);				}				if(KeyboardManager.instance.isKeyDown(KeyCode.P) && bAnimation)				{					this.bAnimation = false;					this.stage.removeChild(character);										this.index++;					if(this.index >= pool.length)					{						this.index = 0;					}					character = pool[this.index];					this.stage.addChild(character);					character.x = 95;					character.y = 200;										character.gotoAndStop("south walk");										setTimeout(resetBool, _nDelay);				}								//this.testCollisions();			}		}			}	}
+﻿package 
+{
+
+	import com.natejc.utils.StageRef;
+	import flash.display.MovieClip;
+	import flash.events.Event;
+	import classes.Room;
+	import classes.Door;
+	import classes.MazeGen;
+	import classes.Player;
+	import com.natejc.input.KeyboardManager;
+	//import com.natejc.input.KeyCode;
+	
+	import flash.net.URLRequest;
+	import flash.net.URLLoader;
+	
+	/**
+	 * ...
+	 * @author Zac
+	 */
+	public class Main extends MovieClip
+	{
+		
+		public 		var mcScreen				:MovieClip;
+		public	 	var pool					:Array = new Array(new Link(), new StormTrooper(), new Yoshi());
+		private 	var index					:Number = 0;
+		private 	var mazeMap					:Array;
+		private		var player					:Player;
+		private 	var sign					:MovieClip;
+		
+		private 	var loader					:URLLoader;
+		
+		public function Main()
+		{
+			this.stage.focus = this.stage;
+			
+			StageRef.stage = this.stage;
+			
+			KeyboardManager.init(this.stage);
+			
+			this.loader = new URLLoader(new URLRequest("map1.txt"));
+			
+			this.loader.addEventListener(Event.COMPLETE, loadComplete);
+			
+		}
+		
+		public function loadComplete(e:Event):void
+		{
+			var maze:MazeGen = new MazeGen();
+			maze.loadMap(this.loader);
+			this.mazeMap = maze.getMap();
+			Room(mazeMap[1][4]).addRoomToStage();
+			this.player = new Player();
+			this.player.setPosCol(4);
+			this.player.setPosRow(1);
+			this.player.sig.add(this.testCollisions);
+			this.player.sigRoom.add(this.getRoom);
+
+		}
+		
+		private function getRoom(row:Number, col:Number):void
+		{
+			this.player.rRoom = Room(this.mazeMap[row][col]);
+		}
+		
+		public function testCollisions():void
+		{
+			if (this.player) 
+			{
+				var room: Room = Room(mazeMap[this.player.getPosRow()][this.player.getPosCol()]);
+				var temp:Array = room.getDoors();
+				for (var i:int = 0; i < temp.length; i++)
+				{
+					if (temp[i])
+					{		
+						if (player.character.Mask.hitTestObject(Door(temp[i]).getMc()))
+						{	
+							trace(temp[i]);
+							if (!sign)
+							{
+								sign = new EnterDoor();
+								this.stage.addChild(sign);
+							}
+							sign.x = player.character.x;
+							sign.y = player.character.y - 15;
+							
+							this.player.mcTouchingDoor = Door(temp[i]).getMc();
+							
+						}
+						else if (sign)
+						{
+							this.player.mcTouchingDoor = null;
+							this.stage.removeChild(sign);
+							this.sign = null;
+						}
+					}
+					
+				}
+			}
+		}//end of function
+		
+		
+	}
+	
+}
