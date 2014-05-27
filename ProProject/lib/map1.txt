@@ -1,6 +1,6 @@
 8x8
 w|w|w|w|w|w|w|w
-w|r|r|r|r|r|r|w
+w|s|f|r|r|r|r|w
 w|r|w|w|r|w|r|w
 w|r|w|r|r|r|r|w
 w|r|r|w|r|w|r|w

@@ -49,12 +49,15 @@
 			var maze:MazeGen = new MazeGen();
 			maze.loadMap(this.loader);
 			this.mazeMap = maze.getMap();
-			Room(mazeMap[1][4]).addRoomToStage();
+	
 			this.player = new Player();
-			this.player.setPosCol(4);
-			this.player.setPosRow(1);
-			this.player.sig.add(this.testCollisions);
+			this.player.setPosCol(maze.getStartCol());
+			this.player.setPosRow(maze.getStartRow());
+		trace(player.getPosCol(), player.getPosRow());
+			this.player.sigColide.add(this.testCollisions);
 			this.player.sigRoom.add(this.getRoom);
+			
+			Room(mazeMap[this.player.getPosRow()][this.player.getPosCol()]).addRoomToStage();
 
 		}
 		
@@ -69,23 +72,22 @@
 			{
 				var room: Room = Room(mazeMap[this.player.getPosRow()][this.player.getPosCol()]);
 				var temp:Array = room.getDoors();
+				
 				for (var i:int = 0; i < temp.length; i++)
 				{
 					if (temp[i])
 					{		
-						if (player.character.Mask.hitTestObject(Door(temp[i]).getMc()))
+						if(player.character.Mask.hitTestObject(Door(temp[i]).getMc()))
 						{	
-							trace(temp[i]);
 							if (!sign)
 							{
 								sign = new EnterDoor();
 								this.stage.addChild(sign);
+								this.player.mcTouchingDoor = Door(temp[i]).getMc();
 							}
 							sign.x = player.character.x;
 							sign.y = player.character.y - 15;
-							
-							this.player.mcTouchingDoor = Door(temp[i]).getMc();
-							
+							break;
 						}
 						else if (sign)
 						{

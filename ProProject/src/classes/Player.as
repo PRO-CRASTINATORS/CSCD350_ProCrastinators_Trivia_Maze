@@ -22,11 +22,15 @@
 		public 		var mcTouchingDoor			:MovieClip;
 		protected 	var _nCharacterSpeed		:Number = 15;
 		protected 	var _nDelay					:Number = 130;
-		public 		var sig						:Signal;
+		public 		var sigColide						:Signal;
 		public 		var sigRoom					:Signal;
 		
 		public 		var rRoom					:Room;
 		
+		private		var topVal					:Number = 40;
+		private		var bottomVal				:Number = 330;
+		private		var leftVal					:Number = 65;
+		private		var rightVal				:Number = 445;
 		
 		public function Player() {
 			// constructor code
@@ -35,7 +39,7 @@
 		
 		private function init():void
 		{
-			sig = new Signal();
+			sigColide = new Signal();
 			sigRoom = new Signal();
 			
 			character = new Link();
@@ -145,14 +149,26 @@
 		
 		public function changeRooms():void
 		{
-			if (this.mcTouchingDoor is zNorthDoor)
+			if (this.mcTouchingDoor is zNorthDoor) 
+			{
+				this.character.y = (bottomVal - character.Mask.height);
 				this.posRow -= 1;
-			if (this.mcTouchingDoor is zSouthDoor)
+			}
+			if (this.mcTouchingDoor is zSouthDoor) 
+			{
+				this.character.y = this.topVal;
 				this.posRow += 1;
-			if (this.mcTouchingDoor is zEastDoor)
+			}
+			if (this.mcTouchingDoor is zEastDoor) 
+			{
+				this.character.x = this.leftVal;
 				this.posCol += 1;
-			if (this.mcTouchingDoor is zWestDoor)
+			}
+			if (this.mcTouchingDoor is zWestDoor) 
+			{
+				this.character.x = this.rightVal;
 				this.posCol -= 1;
+			}
 				
 			this.rRoom.killRoom();
 			sigRoom.dispatch(this.posRow, this.posCol);
@@ -163,17 +179,17 @@
 		{
 			if (this.character)
 			{
-				sig.dispatch();
+				sigColide.dispatch();
 				
 				if (KeyboardManager.instance.isKeyDown(KeyCode.S) && bAnimation)
 				{
 					this.bAnimation = false;
 					character.gotoAndPlay("south walk");
 
-					if((this.character.y + character.Mask.height) < 330)
+					if((this.character.y + character.Mask.height) < bottomVal)
 						this.character.y += _nCharacterSpeed;
 					else
-						this.character.y = (330 - character.Mask.height);
+						this.character.y = (bottomVal - character.Mask.height);
 						
 					setTimeout(resetBool, _nDelay);
 				}
@@ -182,10 +198,10 @@
 					this.bAnimation = false;
 					character.gotoAndPlay("north walk");
 					
-					if(this.character.y > 40)
+					if(this.character.y > topVal)
 						this.character.y -= _nCharacterSpeed;
 					else
-						this.character.y = 40;
+						this.character.y = topVal;
 						
 					setTimeout(resetBool, _nDelay);
 				}
@@ -194,10 +210,10 @@
 					this.bAnimation = false;
 					character.gotoAndPlay("west walk");
 
-					if(this.character.x > 70)
+					if(this.character.x > leftVal)
 						this.character.x -= _nCharacterSpeed;
 					else
-						this.character.x = 70;
+						this.character.x = leftVal;
 						
 					setTimeout(resetBool, _nDelay);
 					
@@ -207,10 +223,10 @@
 					this.bAnimation = false;
 					character.gotoAndPlay("east walk");
 					
-					if(this.character.x < 445)
+					if(this.character.x < rightVal)
 						this.character.x += _nCharacterSpeed;
 					else
-						this.character.x = 445;
+						this.character.x = rightVal;
 						
 					setTimeout(resetBool, _nDelay);
 				}

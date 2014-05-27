@@ -1,1 +1,120 @@
-﻿package  classes{	import flash.display.MovieClip;	import com.natejc.utils.StageRef;	/**	 * ...	 * @author ...	 */	public class Room extends MovieClip	{		private var dNorth	:Door;		private var dSouth	:Door;		private var dEast 	:Door;		private var dWest	:Door;		private var bItem	:Boolean = false;		private var mcRoom	:MovieClip;		private var sType	:String;			public function Room($type:String) 		{			this.dNorth = null;			this.dSouth = null;			this.dEast = null;			this.dWest = null;						this.sType = $type;			this.bItem = this.itemGen();		}				public function addRoomToStage():void		{			if (this.sType == "zelda") 			{				this.mcRoom = new ZeldaRoom();				StageRef.stage.addChildAt(this.mcRoom, 0);			}			if (this.sType == "mario") 			{				this.mcRoom = new MarioRoom()				StageRef.stage.addChildAt(this.mcRoom, 0);			}			/*if($type == "startrek");				StageRef.stage.addChild(new StarTrekRoom());*/			this.addRoomDoors();		}				private function addRoomDoors():void		{			if(dNorth != null)				dNorth.addDoorToStage();			if(dSouth != null)				dSouth.addDoorToStage();			if(dWest != null)				dWest.addDoorToStage();			if(dEast != null)				dEast.addDoorToStage();		}		public function getItem():Boolean		{			return this.bItem;		}		public function setNorth($n:Door) :void		{			this.dNorth = $n;		}		public function setSouth($s:Door) :void		{			this.dSouth = $s;		}		public function setEast($e:Door) :void		{			this.dEast = $e;		}		public function setWest($w:Door) :void		{			this.dWest = $w;		}				public function getDoors():Array		{			return new Array(this.dEast, this.dWest, this.dNorth, this.dSouth);		}				public function killRoom():void		{			StageRef.stage.removeChild(this.mcRoom);			this.mcRoom = null;						if (this.dEast)				this.dEast.killDoor();			if (this.dWest)				this.dWest.killDoor();			if (this.dNorth)				this.dNorth.killDoor();			if (this.dSouth)				this.dSouth.killDoor();		}				private function itemGen():Boolean 		{			var rand:int = Math.floor(Math.random() * (10 - 0 + 1) + 0)			//Random rand = new Random();			if (rand < 3)				return true;			return false;		}	}}
+﻿package  classes
+{
+	import flash.display.MovieClip;
+	import com.natejc.utils.StageRef;
+
+	/**
+	 * ...
+	 * @author ...
+	 */
+	public class Room extends MovieClip
+	{
+		private var dNorth	:Door;
+		private var dSouth	:Door;
+		private var dEast 	:Door;
+		private var dWest	:Door;
+		private var bItem	:Boolean = false;
+		private var btrophy	:Boolean = false;
+		private var mcRoom	:MovieClip;
+		private var sType	:String;
+	
+		public function Room($type:String, $trophy:Boolean = false) 
+		{
+			this.dNorth = null;
+			this.dSouth = null;
+			this.dEast = null;
+			this.dWest = null;
+			
+			this.btrophy = $trophy;
+			
+			this.sType = $type;
+			this.bItem = this.itemGen();
+		}
+		
+		public function addRoomToStage():void
+		{
+			if (this.sType == "zelda") 
+			{
+				this.mcRoom = new ZeldaRoom();
+				StageRef.stage.addChildAt(this.mcRoom, 0);
+			}
+			if (this.sType == "mario") 
+			{
+				this.mcRoom = new MarioRoom()
+				StageRef.stage.addChildAt(this.mcRoom, 0);
+			}
+			/*if($type == "startrek");
+				StageRef.stage.addChild(new StarTrekRoom());*/
+				
+			if (btrophy)
+				StageRef.stage.addChild(new Trophy());
+			this.addRoomDoors();
+		}
+		
+		private function addRoomDoors():void
+		{
+			if(dNorth != null)
+				dNorth.addDoorToStage();
+			if(dSouth != null)
+				dSouth.addDoorToStage();
+			if(dWest != null)
+				dWest.addDoorToStage();
+			if(dEast != null)
+				dEast.addDoorToStage();
+		}
+		public function getItem():Boolean
+		{
+			return this.bItem;
+		}
+
+		public function setNorth($n:Door) :void
+		{
+			this.dNorth = $n;
+		}
+
+		public function setSouth($s:Door) :void
+		{
+			this.dSouth = $s;
+		}
+
+		public function setEast($e:Door) :void
+		{
+			this.dEast = $e;
+		}
+
+		public function setWest($w:Door) :void
+		{
+			this.dWest = $w;
+		}
+		
+		public function getDoors():Array
+		{
+			return new Array(this.dNorth, this.dEast, this.dWest, this.dSouth);
+		}
+		
+		public function killRoom():void
+		{
+			StageRef.stage.removeChild(this.mcRoom);
+			this.mcRoom = null;
+			
+			if (this.dEast)
+				this.dEast.killDoor();
+			if (this.dWest)
+				this.dWest.killDoor();
+			if (this.dNorth)
+				this.dNorth.killDoor();
+			if (this.dSouth)
+				this.dSouth.killDoor();
+		}
+		
+		private function itemGen():Boolean 
+		{
+			var rand:int = Math.floor(Math.random() * (10 - 0 + 1) + 0)
+			//Random rand = new Random();
+			if (rand < 3)
+				return true;
+			return false;
+		}
+	}
+
+}
