@@ -151,22 +151,22 @@
 		{
 			if (this.mcTouchingDoor is zNorthDoor) 
 			{
-				this.character.y = (bottomVal - character.Mask.height);
+				this.character.y = (bottomVal - character.Mask.height) - 20;
 				this.posRow -= 1;
 			}
 			if (this.mcTouchingDoor is zSouthDoor) 
 			{
-				this.character.y = this.topVal;
+				this.character.y = this.topVal + 60;
 				this.posRow += 1;
 			}
 			if (this.mcTouchingDoor is zEastDoor) 
 			{
-				this.character.x = this.leftVal;
+				this.character.x = this.leftVal + 20;
 				this.posCol += 1;
 			}
 			if (this.mcTouchingDoor is zWestDoor) 
 			{
-				this.character.x = this.rightVal;
+				this.character.x = this.rightVal - 20;
 				this.posCol -= 1;
 			}
 				

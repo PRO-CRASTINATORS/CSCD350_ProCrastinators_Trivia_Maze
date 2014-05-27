@@ -9,14 +9,15 @@
 	 */
 	public class Room extends MovieClip
 	{
-		private var dNorth	:Door;
-		private var dSouth	:Door;
-		private var dEast 	:Door;
-		private var dWest	:Door;
-		private var bItem	:Boolean = false;
-		private var btrophy	:Boolean = false;
-		private var mcRoom	:MovieClip;
-		private var sType	:String;
+		private var dNorth		:Door;
+		private var dSouth		:Door;
+		private var dEast 		:Door;
+		private var dWest		:Door;
+		private var bItem		:Boolean = false;
+		private var btrophy		:Boolean = false;
+		private var mcTrophy	:MovieClip;
+		private var mcRoom		:MovieClip;
+		private var sType		:String;
 	
 		public function Room($type:String, $trophy:Boolean = false) 
 		{
@@ -47,7 +48,10 @@
 				StageRef.stage.addChild(new StarTrekRoom());*/
 				
 			if (btrophy)
-				StageRef.stage.addChild(new Trophy());
+			{
+				this.mcTrophy = new Trophy();
+				StageRef.stage.addChild(this.mcTrophy);
+			}
 			this.addRoomDoors();
 		}
 		
@@ -96,6 +100,9 @@
 		{
 			StageRef.stage.removeChild(this.mcRoom);
 			this.mcRoom = null;
+			
+			if (this.btrophy)
+				StageRef.stage.removeChild(this.mcTrophy);
 			
 			if (this.dEast)
 				this.dEast.killDoor();
