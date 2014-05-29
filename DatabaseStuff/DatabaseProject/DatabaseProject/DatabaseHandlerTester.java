@@ -12,7 +12,7 @@ public class DatabaseHandlerTester {
 
 		rsTester = db.getTriviaByCategory("Mario");
 		db.printTrivia(rsTester);
-		
+	
 		rsTester = db.getAllTrivia();
 		db.printTrivia(rsTester);
 		
