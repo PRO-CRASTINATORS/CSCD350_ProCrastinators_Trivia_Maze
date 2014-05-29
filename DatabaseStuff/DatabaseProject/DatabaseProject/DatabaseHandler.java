@@ -1,4 +1,13 @@
+/*
+ * Database Handler class for CSCD 350 Trivia maze
+ * Updated 5/29/14 -KP
+ * 	NOTES:
+ * 			-After printing, you need to use a get method to "rearm" the result set.
+ * 			-Be sure to close the database with the closeDatabse() method when done.
+ */
+
 import java.sql.*;
+
 public class DatabaseHandler
 {
 	private Connection cn = null;
@@ -9,9 +18,9 @@ public class DatabaseHandler
 		try
 		{
 			Class.forName("org.sqlite.JDBC");
-			cn = DriverManager.getConnection("jdbc:sqlite:TriviaItems.db");
-			cn.setAutoCommit(false);
-			stmt = cn.createStatement();
+			this.cn = DriverManager.getConnection("jdbc:sqlite:TriviaItems.db");
+			this.cn.setAutoCommit(false);
+			this.stmt = cn.createStatement();
 			System.out.println("Opened database successfully");
 		}
 		catch ( Exception e ) 
@@ -25,22 +34,24 @@ public class DatabaseHandler
 	
 	public ResultSet getTriviaByCategory(String s) throws SQLException
 	{
-		return stmt.executeQuery( "SELECT * FROM trivia_item WHERE category = '" + s + "';" );
+		return this.stmt.executeQuery( "SELECT * FROM trivia_item WHERE category = '" + s + "';" );
 	}
 	
 	
 	
 	public ResultSet getAllTrivia() throws SQLException
 	{
-		return stmt.executeQuery( "SELECT * FROM trivia_item" );
+		return this.stmt.executeQuery( "SELECT * FROM trivia_item" );
 	}
 	
 	
 	
 	public ResultSet getCategories() throws SQLException
 	{
-		return stmt.executeQuery( "SELECT DISTINCT category FROM trivia_item;" );
+		return this.stmt.executeQuery( "SELECT DISTINCT category FROM trivia_item;" );
 	}
+	
+	
 	
 	public void printCategories(ResultSet rs)
 	{		
@@ -101,6 +112,8 @@ public class DatabaseHandler
 	{
 		this.stmt.close();
 		this.cn.close();
+		this.stmt = null;
+		this.cn = null;
 		System.out.println("Closed database successfully");
 	}
 }//end class

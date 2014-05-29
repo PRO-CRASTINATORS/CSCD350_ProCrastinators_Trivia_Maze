@@ -17,6 +17,7 @@ public class DatabaseHandlerTester {
 		db.printTrivia(rsTester);
 		
 		db.closeDatabase();
-		System.out.println("Tests complete");
+		rsTester.close();
+		System.out.println("Tests complete, Result set closed");
 	}
 }
