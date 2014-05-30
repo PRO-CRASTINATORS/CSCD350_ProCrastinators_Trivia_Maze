@@ -1,0 +1,47 @@
+package  classes
+{
+	/**
+	 * ...
+	 * @author ...
+	 */
+	public class TriviaItem 
+	{
+		private var que: String;
+		private var ans: Array;
+		private var correctIndex: String;
+		
+		public function TriviaItem(ques: String, correct: String, anOne: String, anTwo: String, anThree: String, anFour: String, type: int, category: String) 
+		{
+			que = ques;
+
+			correctIndex = correct;
+
+			if (type == 1) 
+			{
+				ans = new Array(anOne, anTwo);
+			
+			} 
+			else if (type == 2) 
+			{
+				ans = new Array(anOne, anTwo, anThree, anFour);
+			}
+		}
+		
+		public function getQuestion(): String
+		{
+			return que;
+		}
+
+		public function getAnswers(): Array
+		{
+			return ans;
+		}
+
+		public function getCorrectIndex(): String 
+		{
+			return correctIndex;
+		}
+		
+	}
+
+}
