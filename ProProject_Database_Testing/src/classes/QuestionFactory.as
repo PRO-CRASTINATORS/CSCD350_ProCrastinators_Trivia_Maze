@@ -19,7 +19,7 @@ package  classes
 		//constructor
 		public function QuestionFactory() 
 		{
-			db = new DatabaseHandler();
+			//db = new DatabaseHandler();
 		}
 	}
 
