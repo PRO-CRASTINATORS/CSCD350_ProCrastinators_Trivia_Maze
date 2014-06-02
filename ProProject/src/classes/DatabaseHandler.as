@@ -1,47 +1,1 @@
-package  classes
-{
-	
-	import flash.events.Event;
-	import flash.data.SQLConnection;
-    import flash.data.SQLResult;
-    import flash.data.SQLStatement;
-    import flash.events.SQLErrorEvent;
-    import flash.events.SQLEvent;
-    import flash.filesystem.File;
-
-	
-	
-	public class DatabaseHandler 
-	{
-		
-		var conn:SQLConnection;
-		var dbStatement:SQLStatement;
-
-		function init():void
-		{
-			conn = new SQLConnection();
-			conn.addEventListener(SQLEvent.OPEN, connOpenHandler);
-    
-			dbStatement = new SQLStatement();
-			dbStatement.sqlConnection = conn;
-			dbStatement.text = "SELECT question, answer, a, b, c, d, type, category from trivia_item where a = 'Sugar'";
-			dbStatement.itemClass = TriviaItem;
-    
-			var dbFile:File = new File("TriviaItems.db");
-			conn.open(dbFile);
-		}
-
-		function connOpenHandler(event: SQLEvent):void
-		{
-			dbStatement.addEventListener(SQLEvent.RESULT, resultHandler);
-			dbStatement.execute();
-		}
-
-		function resultHandler(event: SQLEvent): SQLResult
-		{
-			return dbStatement.getResult();
-		}
-		
-	}
-
-}
+﻿package  classes{	import flash.data.SQLConnection;	import flash.data.SQLStatement;	import flash.data.SQLResult;	import flash.events.SQLEvent;	import flash.errors.SQLError;	import flash.display.MovieClip;	import flash.net.Responder;	import flash.filesystem.File;		public class DatabaseHandler extends MovieClip	{		private var conn				:SQLConnection;		private var dbStatement			:SQLStatement;		private var employeeResponder	:Responder;		private var aQuestions			:Array;		public function DatabaseHandler() {			// constructor code			init();		}				private function init():void		{			conn = new SQLConnection();			conn.addEventListener(SQLEvent.OPEN, connOpenHandler);						dbStatement = new SQLStatement();			dbStatement.sqlConnection = conn;			dbStatement.text = "SELECT * FROM trivia_item WHERE category = 'Zelda'";			var folder: File = File.applicationDirectory;			var dbFile: File = folder.resolvePath("triviaitems.db");			conn.open(dbFile);		}				private function connOpenHandler(event:SQLEvent):void		{			employeeResponder = new Responder(resultHandler, errorHandler);			dbStatement.execute(-1, employeeResponder);		}				private function resultHandler(result:SQLResult):void		{			if (result != null)			{				var numRows:int = result.data.length;				for (var i:int = 0; i < numRows; i++)				{					var row:Object = result.data[i];					var temp: TriviaItem = new TriviaItem(row.question, row.answer, row.a, row.b, row.c, row.d, row.type);					this.aQuestions.push(temp);				}			}		}				private function errorHandler(error:SQLError):void		{			trace("An error occured while executing the statement.");		}				public getQuestions():Array		{			return this.aQuestions;		}	}	}
