@@ -1,0 +1,1 @@
+﻿package  classes{		public class QuestionScreen extends MovieClip	{		//Designed like MenuScreen class				public function QuestionScreen() 		{			// constructor code		}	}	}
