@@ -188,7 +188,7 @@
 		
 				var doors:Array = mazeMap[row][col].getDoors();
 				
-				if(doors[0] != null && doors[0].getLockedStatus() != 2)
+				if(doors[0] != null && doors[0].getDoorLock() != 2)
 				{
 					stuck = this.checkIfPlayerStuck(row-1,col);
 			
@@ -197,7 +197,7 @@
 				if (stuck == false)
 					return stuck;
 				
-				if(doors[1] != null && doors[1].getLockedStatus() != 2)
+				if(doors[1] != null && doors[1].getDoorLock() != 2)
 				{
 					stuck = this.checkIfPlayerStuck(row,col+1);
 				}
@@ -205,7 +205,7 @@
 				if (stuck == false)
 					return stuck;
 				
-				if(doors[2] != null && doors[2].getLockedStatus() != 2)
+				if(doors[2] != null && doors[2].getDoorLock() != 2)
 				{
 					stuck = this.checkIfPlayerStuck(row,col-1);
 				}
@@ -213,7 +213,7 @@
 				if (stuck == false)
 					return stuck;
 				
-				if(doors[3] != null && doors[3].getLockedStatus() != 2)
+				if(doors[3] != null && doors[3].getDoorLock() != 2)
 				{
 					stuck = this.checkIfPlayerStuck(row+1,col);
 				}
