@@ -166,6 +166,7 @@
 				//this.changeRooms();
 				if(this.dTouchingDoor.getDoorLock() == 0)
 					var q:QuestionScreen = new QuestionScreen(this.dTouchingDoor);
+					
 				if(this.dTouchingDoor.getDoorLock() == 1)
 				{
 					sigRoom.dispatch(this.posRow, this.posCol);
@@ -173,9 +174,14 @@
 				}
 				setTimeout(resetBool, _nDelay);
 			}
-			if (KeyboardManager.instance.isKeyDown(KeyCode.Y) && bAnimation && dTouchingDoor )
+			if (KeyboardManager.instance.isKeyDown(KeyCode.Y) && bAnimation && dTouchingDoor.getDoorLock() != 1 )
 			{
-				
+				if(this.inventory.length > 0)
+				{
+					this.dTouchingDoor.setDoorLock(1);
+					StageRef.stage.removeChild(this.inventory[this.inventory.length-1]);
+					this.inventory.splice(this.inventory.length-1,1);
+				}
 			}
 		}
 		

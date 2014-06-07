@@ -182,14 +182,14 @@
 				if (player.checkInventory() != 0)
 					return false;
 				
-				if(row == player.getRow() && col == player.getCol())
+				if(row == player.getPosRow() && col == player.getPosCol())
 					return false;
 		
 				var doors:Array = mazeMap[row][col].getDoors();
 				
 				if(doors[0] != null && doors[0].getDoorLock() != 2)
 				{
-					stuck = this.checkIfPlayerStuck(row-1,col);
+					stuck = this.checkIfStuck(row-1,col);
 			
 				}
 				
@@ -198,7 +198,7 @@
 				
 				if(doors[1] != null && doors[1].getDoorLock() != 2)
 				{
-					stuck = this.checkIfPlayerStuck(row,col+1);
+					stuck = this.checkIfStuck(row,col+1);
 				}
 		
 				if (stuck == false)
@@ -206,7 +206,7 @@
 				
 				if(doors[2] != null && doors[2].getDoorLock() != 2)
 				{
-					stuck = this.checkIfPlayerStuck(row,col-1);
+					stuck = this.checkIfStuck(row,col-1);
 				}
 		
 				if (stuck == false)
@@ -214,7 +214,7 @@
 				
 				if(doors[3] != null && doors[3].getDoorLock() != 2)
 				{
-					stuck = this.checkIfPlayerStuck(row+1,col);
+					stuck = this.checkIfStuck(row+1,col);
 				}
 				
 				if (stuck == false)
