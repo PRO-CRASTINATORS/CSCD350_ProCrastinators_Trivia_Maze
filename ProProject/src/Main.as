@@ -159,6 +159,71 @@
 			
 			return "./maps/map" + i + ".txt";
 		}
+		
+		private function resetRoomVisits()
+		{
+			for each (var room in mazeMap)
+			{
+				if(room != null)
+				{
+					room.setVisited(false);
+				}
+			}
+		}
+		
+		public function checkIfStuck(row:int, col:int):Boolean
+			{
+				var stuck:Boolean;
+				
+				if (mazeMap[row][col].hasVisited() == true)
+					return true;
+
+				mazeMap[row][col].setVisited(true); 
+
+				if (player.checkInventory() != 0)
+					return false;
+				
+				if(row == player.getRow() && col == player.getCol())
+					return false;
+		
+				var doors:Array = mazeMap[row][col].getDoors();
+				
+				if(doors[0] != null && doors[0].getLockedStatus() != 2)
+				{
+					stuck = this.checkIfPlayerStuck(row-1,col);
+			
+				}
+				
+				if (stuck == false)
+					return stuck;
+				
+				if(doors[1] != null && doors[1].getLockedStatus() != 2)
+				{
+					stuck = this.checkIfPlayerStuck(row,col+1);
+				}
+		
+				if (stuck == false)
+					return stuck;
+				
+				if(doors[2] != null && doors[2].getLockedStatus() != 2)
+				{
+					stuck = this.checkIfPlayerStuck(row,col-1);
+				}
+		
+				if (stuck == false)
+					return stuck;
+				
+				if(doors[3] != null && doors[3].getLockedStatus() != 2)
+				{
+					stuck = this.checkIfPlayerStuck(row+1,col);
+				}
+				
+				if (stuck == false)
+					return stuck;
+		
+				return true;
+
+			}
 	}
 	
 }

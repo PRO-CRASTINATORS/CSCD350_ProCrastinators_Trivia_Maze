@@ -4,6 +4,8 @@
     <versionNumber>1.0</versionNumber>
     <filename>ProProject</filename>
     <description/>
+  
+
   <!-- To localize the description, use the following format for the description element.
 	<description>
 		<text xml:lang="en">English App description goes here</text>
@@ -12,6 +14,8 @@
 	</description>
 	-->
     <name>ProProject</name>
+  
+
   <!-- To localize the name, use the following format for the name element.
 	<name>
 		<text xml:lang="en">English App name goes here</text>
