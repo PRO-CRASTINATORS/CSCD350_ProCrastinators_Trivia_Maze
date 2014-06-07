@@ -19,7 +19,7 @@ public function checkIfStuck(row:int, col:int):Boolean
 			
 				}
 				
-				if (stuck = false)
+				if (stuck == false)
 					return stuck;
 				
 				if(doors[1] != null && doors[1].getLockedStatus() != 2)
@@ -27,7 +27,7 @@ public function checkIfStuck(row:int, col:int):Boolean
 					stuck = this.checkIfPlayerStuck(row,col+1);
 				}
 		
-				if (stuck = false)
+				if (stuck == false)
 					return stuck;
 				
 				if(doors[2] != null && doors[2].getLockedStatus() != 2)
@@ -35,7 +35,7 @@ public function checkIfStuck(row:int, col:int):Boolean
 					stuck = this.checkIfPlayerStuck(row+1,col);
 				}
 		
-				if (stuck = false)
+				if (stuck == false)
 					return stuck;
 				
 				if(doors[3] != null && doors[3].getLockedStatus() != 2)
@@ -43,7 +43,7 @@ public function checkIfStuck(row:int, col:int):Boolean
 					stuck = this.checkIfPlayerStuck(row,col-1);
 				}
 				
-				if (stuck = false)
+				if (stuck == false)
 					return stuck;
 		
 			return true;
