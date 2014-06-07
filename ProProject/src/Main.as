@@ -49,7 +49,6 @@
 		
 		private function init():void
 		{
-
 			this._Title = new TitleScreen();
 			this.stage.addChild(this._Title);
 			this._Title.PlayButton.addEventListener(MouseEvent.CLICK, this.loadMenu, false, 0, true);
@@ -126,7 +125,7 @@
 							{
 								sign = Door(temp[i]).getDoorStatus();
 								this.stage.addChild(sign);
-								this.player.mcTouchingDoor = Door(temp[i]).getMc();
+								this.player.dTouchingDoor = Door(temp[i]);
 							}
 							sign.x = player.character.x;
 							sign.y = player.character.y - 15;
@@ -134,7 +133,7 @@
 						}
 						else if (sign)
 						{
-							this.player.mcTouchingDoor = null;
+							this.player.dTouchingDoor = null;
 							this.stage.removeChild(sign);
 							this.sign = null;
 						}
