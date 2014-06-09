@@ -16,8 +16,8 @@
 		private var aDimensions	:Array;
 		private var startRow	:Number;
 		private var startCol	:Number;
-		private var endRow		:Number;
-		private var endCol		:Number;
+		private var endRow		:int;
+		private var endCol		:int;
 		private var sType		:String = "zelda";
 		private var qfFactory	:QuestionFactory;
 		
@@ -61,12 +61,12 @@
 			return this.startRow;
 		}
 		
-		public function getEndCol():Number
+		public function getEndCol():int
 		{
 			return this.endCol;
 		}
 		
-		public function getEndRow():Number
+		public function getEndRow():int
 		{
 			return this.endRow;
 		}
@@ -85,7 +85,11 @@
 					if (aMap[k][j] == "r" || aMap[k][j] == "f" || aMap[k][j] == "s") 
 					{
 						if (aMap[k][j] == "f")
+						{
 							temp[j] = new Room(this.sType, true);
+							this.endRow = k;
+							this.endCol = j;
+						}
 						else
 							temp[j] = new Room(this.sType);
 						

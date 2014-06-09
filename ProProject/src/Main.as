@@ -16,6 +16,8 @@
 	import flash.net.URLLoader;
 	import flash.events.MouseEvent;
 	
+	import com.treefortress.sound.SoundAS;
+	
 	/**
 	 * ...
 	 * @author Zac
@@ -34,6 +36,8 @@
 		private 	var _Title					:MovieClip;
 		private 	var _Type					:String;
 		private 	var _Difficulty				:String;
+		private 	var _endRow					:int;
+		private 	var _endCol					:int;
 		
 		public function Main()
 		{
@@ -91,13 +95,18 @@
 			var maze:MazeGen = new MazeGen(this._Type);
 			maze.loadMap(this.loader);
 			this.mazeMap = maze.getMap();
+			this._endRow = maze.getEndRow();
+			this._endCol = maze.getEndCol();
 	
 			this.player = new Player(this._Type);
 			this.player.setPosCol(maze.getStartCol());
 			this.player.setPosRow(maze.getStartRow());
-
+			
+			this.pushKeys();
+			
 			this.player.sigColide.add(this.testCollisions);
 			this.player.sigRoom.add(this.getRoom);
+			this.player.sigStuck.add(this.callCheckIfStuck);
 			
 			Room(mazeMap[this.player.getPosRow()][this.player.getPosCol()]).addRoomToStage();
 
@@ -137,11 +146,35 @@
 							this.stage.removeChild(sign);
 							this.sign = null;
 						}
+						if(room.bTrophy)
+						{
+							if(player.character.Mask.hitTestObject(room.getTrophy()))
+							{
+								this.nuke(room);
+							}
+						}
 					}
 					
 				}
 			}
 		}//end of function
+		
+		/*****************************************************************************/
+		//Removes all children fro stage.
+		private function nuke($room:Room):void
+		{
+			$room.killRoom();
+			this.player.kill();
+			SoundAS.fadeTo(this._Type, 0, 0);
+			
+			this.stage.addChild( new ResultScreen());
+			this.stage.addChild( new Congratulations());
+			
+			SoundAS.play("congratz");
+			
+   		}
+		
+		
 		
 		private function getMapInput(d:String):String
 		{
@@ -159,25 +192,43 @@
 			return "./maps/map" + i + ".txt";
 		}
 		
-		private function resetRoomVisits()
+		private function resetRoomVisits():void
 		{
-			for each (var room in mazeMap)
+			for(var k:int=0; k < this.mazeMap.length; k++)
 			{
-				if(room != null)
+				for(var j:int=0; j < this.mazeMap.length; j++)
 				{
-					room.setVisited(false);
+					if(this.mazeMap[k][j] != null)
+						Room(this.mazeMap[k][j]).setVisited(false);
 				}
 			}
 		}
 		
-		public function checkIfStuck(row:int, col:int):Boolean
+		private function callCheckIfStuck():void
+		{
+			var b:Boolean = this.checkIfStuck(this._endRow, this._endCol);
+			if(b == true)
 			{
-				var stuck:Boolean;
+				Room(this.mazeMap[this.player.getPosRow()][this.player.getPosCol()]).killRoom();
+				this.player.kill();
 				
-				if (mazeMap[row][col].hasVisited() == true)
+				this.stage.addChild( new ResultScreen());
+				this.stage.addChild( new GameOver());
+				
+				SoundAS.fadeTo(this._Type, 0, 0);
+				SoundAS.playLoop("gameover");
+			}
+			this.resetRoomVisits();
+		}
+		
+		private function checkIfStuck(row:int, col:int):Boolean
+		{
+				var stuck:Boolean = true;
+				
+				if (Room(mazeMap[row][col]).hasVisited() == true)
 					return true;
 
-				mazeMap[row][col].setVisited(true); 
+				Room(mazeMap[row][col]).setVisited(true); 
 
 				if (player.checkInventory() != 0)
 					return false;
@@ -185,9 +236,9 @@
 				if(row == player.getPosRow() && col == player.getPosCol())
 					return false;
 		
-				var doors:Array = mazeMap[row][col].getDoors();
+				var doors:Array = Room(mazeMap[row][col]).getDoors();
 				
-				if(doors[0] != null && doors[0].getDoorLock() != 2)
+				if(doors[0] != null && Door(doors[0]).getDoorLock() != 2)
 				{
 					stuck = this.checkIfStuck(row-1,col);
 			
@@ -196,7 +247,7 @@
 				if (stuck == false)
 					return stuck;
 				
-				if(doors[1] != null && doors[1].getDoorLock() != 2)
+				if(doors[1] != null && Door(doors[1]).getDoorLock() != 2)
 				{
 					stuck = this.checkIfStuck(row,col+1);
 				}
@@ -204,7 +255,7 @@
 				if (stuck == false)
 					return stuck;
 				
-				if(doors[2] != null && doors[2].getDoorLock() != 2)
+				if(doors[2] != null && Door(doors[2]).getDoorLock() != 2)
 				{
 					stuck = this.checkIfStuck(row,col-1);
 				}
@@ -212,7 +263,7 @@
 				if (stuck == false)
 					return stuck;
 				
-				if(doors[3] != null && doors[3].getDoorLock() != 2)
+				if(doors[3] != null && Door(doors[3]).getDoorLock() != 2)
 				{
 					stuck = this.checkIfStuck(row+1,col);
 				}
@@ -222,6 +273,25 @@
 		
 				return true;
 
+			}
+			
+			public function pushKeys()
+			{
+				if(_Difficulty == "easy")
+					this.player.addKey();
+				else if(_Difficulty == "med")
+				{
+					this.player.addKey();
+					this.player.addKey();
+				}
+				else if(_Difficulty == "hard")
+				{
+					this.player.addKey();
+					this.player.addKey();
+					this.player.addKey();
+				}
+				
+				this.player.addPlayerGUI();
 			}
 	}
 	

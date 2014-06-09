@@ -14,11 +14,11 @@
 		private var dEast 		:Door;
 		private var dWest		:Door;
 		private var bItem		:Boolean = false;
-		private var bTrophy		:Boolean = false;
 		private var mcTrophy	:MovieClip  = new Trophy();
 		private var mcRoom		:MovieClip;
 		private var sType		:String;
 		private var bVisited	:Boolean
+		public var bTrophy		:Boolean = false;
 	
 		public function Room($type:String, $trophy:Boolean = false) 
 		{
@@ -108,7 +108,10 @@
 			this.mcRoom = null;
 			
 			if (this.bTrophy)
+			{
 				StageRef.stage.removeChild(this.mcTrophy);
+			}
+				
 			
 			if (this.dEast)
 				this.dEast.killDoor();

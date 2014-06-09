@@ -3,7 +3,7 @@ w|w|w|w|w|w|w|w
 w|r|w|r|r|r|r|w
 w|r|w|r|w|w|r|w
 w|r|r|s|r|r|r|w
-w|w|w|r|w|w|w
-w|r|r|r|r|r|r|w
+w|w|w|r|w|w|w|w
+w|r|r|r|r|r|w|w
 w|r|w|r|w|r|f|w
 w|w|w|w|w|w|w|w

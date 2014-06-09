@@ -9,6 +9,8 @@
 	import org.osflash.signals.Signal;
 	import classes.Room;
 	import classes.Door;
+	import classes.QuestionScreen;
+	import flash.ui.Keyboard;
 	
 	
 	public class Player extends MovieClip
@@ -17,7 +19,7 @@
 		//protected var score		:int 
 		protected 	var posRow					:int; 
 		protected 	var posCol					:int;
-		protected 	var inventory 				:Array = new Array(new DoorKey(), new DoorKey(), new DoorKey());
+		protected 	var inventory 				:Array = new Array()//Array(new DoorKey(), new DoorKey(), new DoorKey());
 		public 	  	var character				:MovieClip;
 		private   	var bAnimation				:Boolean = true;
 		public 		var dTouchingDoor			:Door;
@@ -25,6 +27,7 @@
 		protected 	var _nDelay					:Number = 130;
 		public 		var sigColide				:Signal;
 		public 		var sigRoom					:Signal;
+		public 		var sigStuck				:Signal;
 		
 		public 		var rRoom					:Room;
 		
@@ -32,6 +35,7 @@
 		private		var bottomVal				:Number = 330;
 		private		var leftVal					:Number = 65;
 		private		var rightVal				:Number = 445;
+		private 	var inv						:MovieClip;
 		
 		public function Player($type:String = null) 
 		{
@@ -50,21 +54,30 @@
 		{
 			sigColide = new Signal();
 			sigRoom = new Signal();
+			sigStuck = new Signal();
 			
 			character.x = 250;
 			character.y = 180;
 			StageRef.stage.addChild(character);
-			StageRef.stage.addChild(new Inventory());
+			this.inv = new Inventory();
+			StageRef.stage.addChild(this.inv);
 			
-			var xSpace:int = 0;
-			for(var x:int=0; x < this.inventory.length; x++)
-			{
-				StageRef.stage.addChild(this.inventory[x]);
-				MovieClip(this.inventory[x]).x = xSpace;
-				xSpace += 68;
-			}
+			
 			
 			this.addEventListener(Event.ENTER_FRAME, this.enterFrameHandler, false, 0, true);
+		}
+		
+		private function checkIfStuck():void
+		{
+			sigStuck.dispatch();
+		}
+		
+		public function kill():void
+		{
+			StageRef.stage.removeChild(this.character);
+			StageRef.stage.removeChild(this.inv);
+			while(this.removeKey());
+			this.removeEventListener(Event.ENTER_FRAME, this.enterFrameHandler, false);
 		}
 		
 		public function getPosRow():Number
@@ -89,66 +102,28 @@
 		
 		public function checkInventory():int
 		{
-			var x:int = 0;
-			var k:int = 0;
-			
-			for(x = 0; x < this.inventory.length; x++)
-			{
-			 	if(this.inventory[x] == 1)
-					k++;
-			}
-			return k;
+			return this.inventory.length;
 		}
 		
 		public function playerSigns():void
 		{
 
 		}
-		
+
 		public function addKey():void
 		{
-		 	var x:int = 0;
-		 	var added:Boolean = false;
-			while(added == false && x != this.inventory.length)
-			{
-			 	if(this.inventory[x] == 0)
-			 	{
-					this.inventory[x] = 1;
-					added = true;
-				}
-				x++;
-			}
-			if(added)
-			{
-				trace("Key Obtained!");
-			}
-			else
-			{
-				trace("Inventory is full!");
-			}
+			this.inventory.push(new DoorKey());
 		}
-		
-		public function removeKey():void
+
+		public function removeKey():Boolean
 		{
-			var x:int = 0;
-			var added:Boolean = false;
-			while(added == false && x != this.inventory.length)
+			if(this.inventory.length > 0)
 			{
-				if(this.inventory[x] == 1)
-				{
-					this.inventory[x] = 0;
-					added = true;
-				}
-				x++;
+				StageRef.stage.removeChild(this.inventory[this.inventory.length-1]);
+				this.inventory.splice(this.inventory.length-1,1);
+				return true;
 			}
-			if(added)
-			{
-				trace("Key Obtained!");
-			}
-			else
-			{
-				trace("Inventory is full!");
-			}
+			return false;
 		}
 		
 		private function resetBool():void
@@ -165,8 +140,10 @@
 				//sigRoom.dispatch(this.posRow, this.posCol);
 				//this.changeRooms();
 				if(this.dTouchingDoor.getDoorLock() == 0)
-					var q:QuestionScreen = new QuestionScreen(this.dTouchingDoor);
-					
+				{
+					var q: QuestionScreen = new QuestionScreen(this.dTouchingDoor);
+					q.sigStuck.add(this.checkIfStuck);
+				}
 				if(this.dTouchingDoor.getDoorLock() == 1)
 				{
 					sigRoom.dispatch(this.posRow, this.posCol);
@@ -176,11 +153,10 @@
 			}
 			if (KeyboardManager.instance.isKeyDown(KeyCode.Y) && bAnimation && dTouchingDoor.getDoorLock() != 1 )
 			{
-				if(this.inventory.length > 0)
+				if(this.removeKey())
 				{
 					this.dTouchingDoor.setDoorLock(1);
-					StageRef.stage.removeChild(this.inventory[this.inventory.length-1]);
-					this.inventory.splice(this.inventory.length-1,1);
+					this.checkIfStuck();
 				}
 			}
 		}
@@ -274,6 +250,18 @@
 				
 			}
 		}// end of function
+		
+		public function addPlayerGUI()
+		{
+			var xSpace:int = 0;
+			
+			for(var x:int=0; x < this.inventory.length; x++)
+			{
+				StageRef.stage.addChild(this.inventory[x]);
+				MovieClip(this.inventory[x]).x = xSpace;
+				xSpace += 68;
+			}
+		}
 
 	}// end of class
 	

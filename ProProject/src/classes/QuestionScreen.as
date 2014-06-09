@@ -6,13 +6,16 @@
 	import com.natejc.utils.StageRef;
 	import classes.TriviaItem;
 	import classes.Door;
+	import org.osflash.signals.Signal;
 	
 	public class QuestionScreen extends MovieClip
 	{
 		private var mcScreen	:MovieClip;
 		private var dDoor		:Door;
 		private var tTriv		:TriviaItem;
-		private var sAns		:String;
+		private var sAns		:String = "A";
+		public 	var sigStuck	:Signal;
+		public 	var stuStuck	:Boolean = false;
 		
 		public function QuestionScreen($door:Door = null) 
 		{
@@ -20,6 +23,7 @@
 			this.mcScreen = new QuestionClip();
 			this.dDoor = $door;
 			this.tTriv = $door.getTriviaItem();
+			sigStuck = new Signal();
 			init();
 		}
 		
@@ -90,18 +94,19 @@
 		{
 			if(this.sAns == this.tTriv.getCorrectIndex())
 			{
-				trace("CORRECT");
 				this.dDoor.setDoorLock(1);
 			}
+			//wrong
 			else
 			{
-				trace("WRONG");
 				this.dDoor.setDoorLock(2);
+				this.sigStuck.dispatch();
 			}
-				
 			this.kill();
+				
 			
 		}
+		
 		public function kill($me:MouseEvent = null):void
 		{
 			
