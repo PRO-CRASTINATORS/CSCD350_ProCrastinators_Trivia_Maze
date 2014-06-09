@@ -24,11 +24,11 @@
 		
 		public function init()
 		{
-			SoundAS.loadSound("./soundFX/Zelda_Theme.mp3", "zelda");
-			SoundAS.loadSound("./soundFX/Mario_Theme.mp3", "mario");
-			SoundAS.loadSound("./soundFX/StarWars_Theme.mp3", "starwars");
-			SoundAS.loadSound("./soundFX/Creepy_Laugh.mp3", "gameover");
-			SoundAS.loadSound("./soundFX/Congratz.mp3", "congratz");
+			SoundAS.loadSound("./lib/soundFX/Zelda_Theme.mp3", "zelda");
+			SoundAS.loadSound("./lib/soundFX/Mario_Theme.mp3", "mario");
+			SoundAS.loadSound("./lib/soundFX/StarWars_Theme.mp3", "starwars");
+			SoundAS.loadSound("./lib/soundFX/Creepy_Laugh.mp3", "gameover");
+			SoundAS.loadSound("./lib/soundFX/Congratz.mp3", "congratz");
 			SoundAS.playLoop(this.sType);
 			
 			StageRef.stage.addChild(this.mcScreen);

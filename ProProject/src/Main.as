@@ -189,7 +189,7 @@
 			
 			trace(i);
 			
-			return "./maps/map" + i + ".txt";
+			return "./lib/maps/map" + i + ".txt";
 		}
 		
 		private function resetRoomVisits():void
