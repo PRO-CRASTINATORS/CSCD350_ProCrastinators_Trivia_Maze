@@ -7,6 +7,7 @@
 	import classes.TriviaItem;
 	import classes.Door;
 	import org.osflash.signals.Signal;
+	import com.treefortress.sound.SoundAS;
 	
 	public class QuestionScreen extends MovieClip
 	{
@@ -15,6 +16,7 @@
 		private var tTriv		:TriviaItem;
 		private var sAns		:String = "A";
 		public 	var sigStuck	:Signal;
+		public 	var sigMove		:Signal;
 		public 	var stuStuck	:Boolean = false;
 		
 		public function QuestionScreen($door:Door = null) 
@@ -23,7 +25,8 @@
 			this.mcScreen = new QuestionClip();
 			this.dDoor = $door;
 			this.tTriv = $door.getTriviaItem();
-			sigStuck = new Signal();
+			this.sigStuck = new Signal();
+			this.sigMove = new Signal();
 			init();
 		}
 		
@@ -95,13 +98,17 @@
 			if(this.sAns == this.tTriv.getCorrectIndex())
 			{
 				this.dDoor.setDoorLock(1);
+				SoundAS.play("correct", 1);
 			}
 			//wrong
 			else
 			{
+				SoundAS.play("wrong", 1);
 				this.dDoor.setDoorLock(2);
 				this.sigStuck.dispatch();
 			}
+			
+			this.sigMove.dispatch();
 			this.kill();
 				
 			

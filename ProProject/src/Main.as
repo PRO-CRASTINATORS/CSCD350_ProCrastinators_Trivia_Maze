@@ -32,9 +32,12 @@
 		private		var player					:Player;
 		private 	var sign					:MovieClip;
 		private 	var loader					:URLLoader;
+		
 		private 	var _Menu					:MenuScreen;
 		private 	var _ResultScreen			:MovieClip;
 		private 	var _Title					:MovieClip;
+		private 	var _HowTo					:MovieClip;
+		
 		private 	var _Type					:String;
 		private 	var _Difficulty				:String;
 		private 	var _endRow					:int;
@@ -52,12 +55,41 @@
 			
 		}
 		/*****************************************************************************/
-		private function init():void
+		private function init($me:MouseEvent = null):void
 		{
+			if(this._Menu)
+			{
+				this._Menu.kill();
+				this._Menu = null;
+				SoundAS.fadeAllTo(0,500);
+			}
+			
+			if(this._HowTo)
+			{
+				this._HowTo.BackButton.removeEventListener(MouseEvent.CLICK, this.loadMenu, false);
+				this.stage.removeChild(this._HowTo);
+				this._HowTo = null;
+			}
+			
 			this._Title = new TitleScreen();
 			this.stage.addChild(this._Title);
 			this._Title.PlayButton.addEventListener(MouseEvent.CLICK, this.loadMenu, false, 0, true);
+			this._Title.HowToButton.addEventListener(MouseEvent.CLICK, this.loadHowTo, false, 0, true);
 			
+		}
+		/*****************************************************************************/
+		private function loadHowTo($me:MouseEvent):void
+		{
+			if(this._Title)
+			{
+				this._Title.PlayButton.removeEventListener(MouseEvent.CLICK, this.loadMenu, false);
+				this.stage.removeChild(this._Title);
+				this._Title = null;
+			}
+			
+			this._HowTo = new HowToClip();
+			this.stage.addChild(this._HowTo);
+			this._HowTo.BackButton.addEventListener(MouseEvent.CLICK, this.init, false, 0, true);
 		}
 		/*****************************************************************************/
 		private function loadMenu($me:MouseEvent):void
@@ -81,6 +113,7 @@
 			
 			this._Menu = new MenuScreen();
 			this._Menu.sig.addOnce(this.loadGame);
+			this._Menu.sigBack.addOnce(this.init);
 		}
 		/*****************************************************************************/
 		private function loadGame($me:MouseEvent):void
@@ -178,9 +211,9 @@
 		//Removes all children fro stage.
 		private function nuke($room:Room):void
 		{
-			$room.killRoom();
 			this.player.kill();
-
+			this.player = null;
+			$room.killRoom();
    		}
 		/*****************************************************************************/
 		private function setUpResult($tf:Boolean):void

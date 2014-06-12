@@ -11,6 +11,7 @@
 
 		private var mcScreen	:MovieClip;
 		public var sig			:Signal;
+		public var sigBack		:Signal;
 		private var sType		:String = "zelda";
 		private var sDiff		:String = "easy";
 		
@@ -19,6 +20,7 @@
 			// constructor code
 			this.mcScreen = new MenuClip();
 			this.sig = new Signal();
+			this.sigBack = new Signal();
 			init();
 		}
 		
@@ -29,7 +31,9 @@
 			SoundAS.loadSound("./lib/soundFX/StarWars_Theme.mp3", "starwars");
 			SoundAS.loadSound("./lib/soundFX/Creepy_Laugh.mp3", "gameover");
 			SoundAS.loadSound("./lib/soundFX/Congratz.mp3", "congratz");
-			SoundAS.playLoop(this.sType);
+			SoundAS.loadSound("./lib/soundFX/Wrong.mp3", "wrong");
+			SoundAS.loadSound("./lib/soundFX/Correct.mp3", "correct");
+			SoundAS.playLoop(this.sType, .5);
 			
 			StageRef.stage.addChild(this.mcScreen);
 									
@@ -42,6 +46,7 @@
 			this.mcScreen.HardButton.addEventListener(MouseEvent.CLICK, this.setDiff, false, 0, true);
 			
 			this.mcScreen.OKButton.addEventListener(MouseEvent.CLICK, sig.dispatch, false, 0, true);
+			this.mcScreen.BackButton.addEventListener(MouseEvent.CLICK, sigBack.dispatch, false, 0, true);
 		}
 		
 		private function setType($me:MouseEvent):void
@@ -54,7 +59,7 @@
 				{
 					SoundAS.fadeTo(this.sType, 0, 1000);
 					this.sType = "zelda";
-					SoundAS.playLoop(this.sType);
+					SoundAS.playLoop(this.sType, .5);
 				}
 			}
 			if($me.target.name == "YoshiButton")
@@ -64,7 +69,7 @@
 				{
 					SoundAS.fadeTo(this.sType, 0, 1000);
 					this.sType = "mario";
-					SoundAS.playLoop(this.sType);
+					SoundAS.playLoop(this.sType, .5);
 				}
 			}
 			if($me.target.name == "TrooperButton")
@@ -74,7 +79,7 @@
 				{
 					SoundAS.fadeTo(this.sType, 0, 1000);
 					this.sType = "starwars";
-					SoundAS.playLoop(this.sType);
+					SoundAS.playLoop(this.sType, .5);
 				}
 			}
 		}

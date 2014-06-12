@@ -72,12 +72,17 @@
 			sigStuck.dispatch();
 		}
 		
+		private function returnPlayerMovement():void
+		{
+			this.addEventListener(Event.ENTER_FRAME, this.enterFrameHandler, false, 0, true);
+		}
+		
 		public function kill():void
 		{
+			this.removeEventListener(Event.ENTER_FRAME, this.enterFrameHandler, false);
 			StageRef.stage.removeChild(this.character);
 			StageRef.stage.removeChild(this.inv);
 			while(this.removeKey());
-			this.removeEventListener(Event.ENTER_FRAME, this.enterFrameHandler, false);
 		}
 		
 		public function getPosRow():Number
@@ -103,11 +108,6 @@
 		public function checkInventory():int
 		{
 			return this.inventory.length;
-		}
-		
-		public function playerSigns():void
-		{
-
 		}
 
 		public function addKey():void
@@ -141,8 +141,10 @@
 				//this.changeRooms();
 				if(this.dTouchingDoor.getDoorLock() == 0)
 				{
+					this.removeEventListener(Event.ENTER_FRAME, this.enterFrameHandler, false);
 					var q: QuestionScreen = new QuestionScreen(this.dTouchingDoor);
-					q.sigStuck.add(this.checkIfStuck);
+					q.sigStuck.addOnce(this.checkIfStuck);
+					q.sigMove.addOnce(this.returnPlayerMovement);
 				}
 				if(this.dTouchingDoor.getDoorLock() == 1)
 				{
