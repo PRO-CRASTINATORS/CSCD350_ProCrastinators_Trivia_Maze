@@ -1,7 +1,0 @@
-6x6
-w|w|w|w|w|w
-w|s|r|w|f|w
-w|w|r|w|r|w
-w|r|r|r|r|w
-w|w|r|w|r|w
-w|w|w|w|w|w
